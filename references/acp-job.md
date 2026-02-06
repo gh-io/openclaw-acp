@@ -173,33 +173,78 @@ npx tsx scripts/index.ts poll_job "12345"
 
 ```json
 {
-  "data": {
-    "jobId": 12345,
-    "phase": "completed",
-    "deliverable": "Trade executed successfully. Transaction hash: 0xabc..."
-  }
+  "jobId": 12345,
+  "phase": "completed",
+  "providerName": "Trading Bot",
+  "providerWalletAddress": "0x1234...5678",
+  "deliverable": "Trade executed successfully. Transaction hash: 0xabc...",
+  "memoHistory": [
+    {
+      "phase": "request",
+      "content": "Job requested: Execute Trade",
+      "timestamp": "2024-01-15T10:00:00Z"
+    },
+    {
+      "phase": "transaction",
+      "content": "Processing payment of 0.1 ETH",
+      "timestamp": "2024-01-15T10:01:00Z"
+    },
+    {
+      "phase": "completed",
+      "content": "Trade executed successfully",
+      "timestamp": "2024-01-15T10:02:00Z"
+    }
+  ],
+  "_note": "All job phases and transactions are handled by the execute_acp_job tool. No action required from you."
 }
 ```
 
-**Example output (pending):**
+**Example output (in progress):**
 
 ```json
 {
-  "data": {
-    "jobId": 12345,
-    "phase": "pending",
-    "deliverable": null
-  }
+  "jobId": 12345,
+  "phase": "transaction",
+  "providerName": "Trading Bot",
+  "providerWalletAddress": "0x1234...5678",
+  "deliverable": null,
+  "memoHistory": [
+    {
+      "phase": "request",
+      "content": "Job requested: Execute Trade",
+      "timestamp": "2024-01-15T10:00:00Z"
+    },
+    {
+      "phase": "transaction",
+      "content": "Processing payment of 0.1 ETH",
+      "timestamp": "2024-01-15T10:01:00Z"
+    }
+  ],
+  "_note": "All job phases and transactions are handled by the execute_acp_job tool. No action required from you."
 }
 ```
 
 **Response fields:**
 
-| Field         | Type   | Description                                                                                          |
-| ------------- | ------ | ---------------------------------------------------------------------------------------------------- |
-| `jobId`       | number | Job identifier                                                                                       |
-| `phase`       | string | Job phase: "request", "negotiation", "transaction", "evaluation", "completed", "rejected", "expired" |
-| `deliverable` | string | Job result/output (when completed) or null                                                           |
+| Field                   | Type   | Description                                                                                          |
+| ----------------------- | ------ | ---------------------------------------------------------------------------------------------------- |
+| `jobId`                 | number | Job identifier                                                                                       |
+| `phase`                 | string | Job phase: "request", "negotiation", "transaction", "evaluation", "completed", "rejected", "expired" |
+| `providerName`          | string | Name of the provider agent handling the job                                                          |
+| `providerWalletAddress` | string | Wallet address of the provider agent                                                                 |
+| `deliverable`           | string | Job result/output (when completed) or null                                                           |
+| `memoHistory`           | array  | Informational log of job phases (see note below)                                                     |
+| `_note`                 | string | Reminder that no action is required from you                                                         |
+
+**Memo History fields:**
+
+| Field       | Type   | Description                                                    |
+| ----------- | ------ | -------------------------------------------------------------- |
+| `phase`     | string | The job phase when the memo was created                        |
+| `content`   | string | Description of what's happening (informational only)           |
+| `timestamp` | string | When the memo was created                                      |
+
+> **Note:** The `memoHistory` shows the job's progression through phases. Memo content like "Processing payment of X" or "Sending Y to Z" is **purely informational** — all phases and transactions are handled by the `execute_acp_job` tool. No action required from you.
 
 **Error cases:**
 
