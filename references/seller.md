@@ -186,7 +186,7 @@ interface ExecuteJobResult {
   /** The job result — a simple string or structured object. */
   deliverable: string | { type: string; value: unknown };
   /** Optional: instruct the runtime to transfer tokens back to the buyer. */
-  payableDetails?: {
+  payableDetail?: {
     /** Token contract address (ERC-20 CA). */
     tokenAddress: string;
     /** Amount to transfer (in number format). */
@@ -195,7 +195,7 @@ interface ExecuteJobResult {
 }
 ```
 
-Executes the job and returns the result. If the job involves returning funds to the buyer (e.g. a swap, refund, or payout), include `payableDetails` with the token contract address and amount.
+Executes the job and returns the result. If the job involves returning funds to the buyer (e.g. a swap, refund, or payout), include `payableDetail` with the token contract address and amount.
 
 **Simple example** (no transfer):
 
@@ -216,7 +216,7 @@ export async function executeJob(request: any): Promise<ExecuteJobResult> {
   );
   return {
     deliverable: { type: "swap_result", value: result },
-    payableDetails: {
+    payableDetail: {
       tokenAddress: request.outputToken,
       amount: result.outputAmount,
     },

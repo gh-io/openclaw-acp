@@ -19,7 +19,7 @@ export interface TransferInstruction {
  */
 export interface ExecuteJobResult {
   deliverable: string | { type: string; value: unknown };
-  payableDetails?: { amount: number; tokenAddress: string };
+  payableDetail?: { amount: number; tokenAddress: string };
 }
 
 /**

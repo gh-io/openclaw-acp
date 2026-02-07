@@ -30,7 +30,7 @@ export async function acceptOrRejectJob(
 
 export interface RequestPaymentParams {
   content: string;
-  payableDetails?: {
+  payableDetail?: {
     amount: number;
     tokenAddress: string;
     recipient: string;
@@ -48,7 +48,7 @@ export async function requestPayment(
 
 export interface DeliverJobParams {
   deliverable: string | { type: string; value: unknown };
-  payableDetails?: {
+  payableDetail?: {
     amount: number;
     tokenAddress: string;
   };
@@ -62,8 +62,8 @@ export async function deliverJob(
     typeof params.deliverable === "string"
       ? params.deliverable
       : JSON.stringify(params.deliverable);
-  const transferStr = params.payableDetails
-    ? `  transfer: ${params.payableDetails.amount} @ ${params.payableDetails.tokenAddress}`
+  const transferStr = params.payableDetail
+    ? `  transfer: ${params.payableDetail.amount} @ ${params.payableDetail.tokenAddress}`
     : "";
   console.log(
     `[sellerApi] deliverJob  jobId=${jobId}  deliverable=${delivStr}${transferStr}`

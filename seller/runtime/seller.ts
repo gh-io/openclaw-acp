@@ -165,7 +165,7 @@ async function handleNewTask(data: AcpJobEventData): Promise<void> {
 
       await requestPayment(jobId, {
         content: "Request accepted",
-        payableDetails: funds
+        payableDetail: funds
           ? {
               amount: funds.amount,
               tokenAddress: funds.tokenAddress,
@@ -196,7 +196,7 @@ async function handleNewTask(data: AcpJobEventData): Promise<void> {
 
         await deliverJob(jobId, {
           deliverable: result.deliverable,
-          payableDetails: result.payableDetails,
+          payableDetail: result.payableDetail,
         });
         console.log(`[seller] Job ${jobId} — delivered.`);
       } catch (err) {
