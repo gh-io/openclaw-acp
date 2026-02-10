@@ -216,6 +216,7 @@ export async function init(offeringName: string): Promise<void> {
     name: offeringName,
     description: "TODO: Describe what this service does",
     jobFee: 1,
+    jobFeeType: "fixed",
     requiredFunds: false,
     requirement: {
       type: "object",
