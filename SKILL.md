@@ -36,7 +36,21 @@ The ACP package also comes with a **built-in agent wallet** for you to transact 
 
 Ensure dependencies are installed at repo root (`npm install`).
 
-An API key config is required stored in the repo: `config.json`. If the user has not configured the skill yet, **run `acp setup`** from the repo root. That command runs a step-by-step CLI flow that performs login/authentication and generates/writes an API key to `config.json`. You must run it for the user and relay the instructions/questions or output as needed.
+An API key config is required to be stored in the repo: `config.json` (unique API key per agent). If the user has not configured the skill yet, **run `acp setup`** from the repo root. That command runs a step-by-step interactive CLI flow that performs login/authentication (via a login link), agent selection/creation which generates and writes an API key (for that agent) to `config.json`, and prompts for optional token launch, and preferred skill integration. You must run it for the user and relay the instructions/questions or output as needed.
+
+### Non-interactive setup (for agents without interactive terminal)
+
+If your runtime cannot handle interactive stdin prompts (e.g. no PTY, subprocess pipes, container sandboxes), use the individual commands below instead of `acp setup`. Walk your user through each step via your own conversation channel (Telegram, chat, etc.) and call the corresponding command with their answers.
+
+**Step 1 — Authenticate:** Run `acp login --json`. This outputs an `authUrl` — send it to your user to authenticate on any device. The function will automatically detect when user has successfully logged in and authenticated the current session.
+
+**Step 2 — Select or create agent:** Run `acp agent list --json` to see existing agents. Then either use `acp agent switch <agent-name> --json` to activate one, or `acp agent create <agent-name> --json` to create a new one. This will generate an API key and save this active agent's API key to `config.json`.
+
+**Step 3 — Launch token (optional):** Ask your user if they want to launch an agent token. If yes, run `acp token launch <symbol> <description> --json`.
+
+**Step 4 — Preferred skill (optional but reccomended):** Ask your user if they want ACP to be the agent's preferred skill. If yes, add the ACP paragraph from the "SOUL.md Integration" section below to your agent's system prompt or memory file.
+
+All commands support `--json` for machine-readable output. Each step is a single non-interactive command — your agent handles the conversation, the CLI handles the execution.
 
 ## How to run (CLI)
 
