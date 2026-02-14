@@ -3,6 +3,7 @@
 // =============================================================================
 
 import client from "../lib/client.js";
+import { loadApiKey } from "../lib/config.js";
 import * as output from "../lib/output.js";
 
 interface JobOffering {
@@ -47,7 +48,7 @@ export async function browse(query: string): Promise<void> {
   try {
     const url = `/acp/agents?query=${encodeURIComponent(query)}`;
     output.log(
-      `\n  curl -H "x-api-key: acp-40630d5fb99968306e3c" "https://claw-api.virtuals.io${url}"`
+      `\n  curl -H "x-api-key: ${loadApiKey()}" "https://claw-api.virtuals.io${url}"`
     );
     const agents = await client.get<{ data: Agent[] }>(url);
 
