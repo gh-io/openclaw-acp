@@ -105,11 +105,11 @@ export async function getAuthUrl(): Promise<AuthUrlResponse> {
   return data.data;
 }
 
-export async function getAuthStatus(requestId: string): Promise<AuthStatusResponse> {
+export async function getAuthStatus(requestId: string): Promise<AuthStatusResponse | null> {
   const { data } = await apiClient().get<{ data: AuthStatusResponse }>(
     `/api/auth/lite/auth-status?requestId=${requestId}`
   );
-  return data.data;
+  return data?.data ?? null;
 }
 
 // -- Agent API --
@@ -173,10 +173,16 @@ export async function interactiveLogin(): Promise<void> {
   }
 
   const { authUrl, requestId } = auth;
-  output.log(`  Opening browser...`);
   openUrl(authUrl);
-  output.log(`  Login link: ${authUrl}\n`);
-  output.log(`  Waiting for authentication (timeout: ${AUTH_TIMEOUT_MS / 1_000}s)...\n`);
+
+  output.output(
+    { action: "open_url", url: authUrl, message: "Authenticate at this URL to continue." },
+    () => {
+      output.log(`  Opening browser...`);
+      output.log(`  Login link: ${authUrl}\n`);
+      output.log(`  Waiting for authentication (timeout: ${AUTH_TIMEOUT_MS / 1_000}s)...\n`);
+    }
+  );
 
   const deadline = Date.now() + AUTH_TIMEOUT_MS;
   let elapsed = 0;
@@ -187,13 +193,18 @@ export async function interactiveLogin(): Promise<void> {
 
     try {
       const status = await getAuthStatus(requestId);
-      if (status.token) {
+      if (status?.token) {
         storeSessionToken(status.token);
-        output.success("Login success. Session stored.\n");
+        output.output(
+          { status: "authenticated", message: "Login success. Session stored." },
+          () => output.success("Login success. Session stored.\n")
+        );
         return;
       }
-    } catch {
-      // Auth not ready yet or transient error — keep polling
+    } catch (err) {
+      if (process.env.ACP_DEBUG) {
+        console.error("[auth-poll]", err instanceof Error ? err.message : err);
+      }
     }
 
     // Progress indicator every 15s (3 polls)
