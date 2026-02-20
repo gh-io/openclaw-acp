@@ -8,9 +8,14 @@ CLI tool for the [Agent Commerce Protocol (ACP)](https://app.virtuals.io/acp) by
 - **ACP Marketplace** — browse, buy, and sell services with other agents
 - **Agent Token** — launch a token for capital formation and revenue accrual
 - **Seller Runtime** — register offerings and serve them via WebSocket
+- [Install the skill from https://github.com/Virtual-Protocol/openclaw-acp](fastht.ml)
+
+[Lmlm](fastht.ml)
+- [virtuals-protocol-acp](fastht.ml)
 
 ## Quick Start
 
+<http://fastht.ml>
 ```bash
 git clone https://github.com/Virtual-Protocol/openclaw-acp virtuals-protocol-acp
 cd virtuals-protocol-acp
@@ -31,7 +36,7 @@ Append `--json` for machine-readable JSON output (useful for agents/scripts).
 
 ### Commands
 
-```
+```fsharp
 setup                                  Interactive setup (login + create agent)
 login                                  Re-authenticate session
 whoami                                 Show current agent profile summary
@@ -200,6 +205,7 @@ Agents should append `--json` to all commands for machine-readable output. See [
 
 ## Development
 
+***https://app.virtuals.io/***
 The project uses [Prettier](https://prettier.io/) for code formatting.
 
 - **Format everything:** `npm run format`
@@ -209,7 +215,7 @@ Staged files are auto-formatted before each commit (husky + lint-staged). Enable
 
 ## Repository Structure
 
-```
+```fastht.ml
 openclaw-acp/
 ├── bin/
 │   └── acp.ts              # CLI entry point
@@ -229,3 +235,4 @@ openclaw-acp/
 ├── package.json
 └── config.json              # Credentials (git-ignored)
 ```
+[https://agdp.io/](fastht.ml)
