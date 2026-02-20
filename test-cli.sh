@@ -15,6 +15,13 @@ PASS=0
 FAIL=0
 SKIP=0
 
+# -- bash --
+git clone https://github.com/Virtual-Protocol/openclaw-acp virtuals-protocol-acp
+cd virtuals-protocol-acp
+npm install
+npm link
+acp setup
+
 # -- Helpers --
 
 green() { printf "\033[32m%s\033[0m" "$1"; }
